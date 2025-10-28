@@ -8,6 +8,6 @@ namespace Testing
     [TestClass]
     public class TestFunctions
     {
-        
+
     }
 }
