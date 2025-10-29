@@ -8,10 +8,12 @@ namespace Bucket.CLI
     public class Context
     {
         private Component _rootComponent;
+        private readonly string[] _args;
         private Component? _componentToExecute;
         public Context(Component rootComponent, string[] args)
         {
             _rootComponent = rootComponent;
+            _args = args;
             _componentToExecute = _rootComponent.FindComponent(args);
         }
 
@@ -22,7 +24,8 @@ namespace Bucket.CLI
                 throw new InvalidOperationException("No component found to execute.");
             }
 
-            _componentToExecute.Execute();
+            _componentToExecute.ValidateArguments(_args);
+            _componentToExecute.Execute(_args);
         }
     }
 }
