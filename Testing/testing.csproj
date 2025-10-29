@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLI\cli.csproj" />
+    <ProjectReference Include="..\Bucket.CLI\Bucket.CLI.csproj" />
   </ItemGroup>
 
 </Project>

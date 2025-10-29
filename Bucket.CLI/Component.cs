@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CLI
+namespace Bucket.CLI
 {
     public abstract class Component
     {
