@@ -2,13 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bucket.CLI;
+using CLI;
 
 namespace Testing.TestObjects
 {
-    public class TestFunction : Function
+    public class TestComponent : Component
     {
-        public TestFunction() : base(
+        public TestComponent(string name, string description) : base(
+            name,
+            description
+        )
+        { }
+
+        public TestComponent() : base(
             "test",
             "function for testing"
         )
@@ -16,11 +22,12 @@ namespace Testing.TestObjects
 
         public override void Execute(params string[] args)
         {
-            Console.WriteLine("Executed test function");
+            Console.WriteLine($"Executed {Name} function");
         }
 
         public override void ValidateArguments(params string[] args)
         {
+            Console.WriteLine($"Validating arguments for {Name} function");
             return;
         }
     }

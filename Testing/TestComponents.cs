@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CLI;
 using Testing.TestObjects;
 
 namespace Testing
@@ -12,11 +13,38 @@ namespace Testing
         [TestMethod]
         public void TestComponentInfoGeneration()
         {
-            var function = new TestFunction();
+            var component = new TestComponent();
 
-            var functionInfo = function.GenerateInfo();
+            var componentInfo = component.GenerateInfo();
 
-            Assert.AreEqual("test: function for testing", functionInfo);
+            Assert.AreEqual("test: function for testing", componentInfo);
+        }
+
+        private static Component GenerateComponent()
+        {
+            return new TestComponent("test menu", "menu for testing");
+        }
+
+        [TestMethod]
+        public void TestParentAssociation()
+        {
+            var menu = GenerateComponent();
+            var function = new TestComponent("test function", "function for testing");
+
+            menu.Children.Add(function);
+
+            Assert.AreEqual(function.Parent, menu);
+        }
+
+        [TestMethod]
+        public void TestMenuParentAssociation()
+        {
+            var parentMenu = GenerateComponent();
+            var childMenu = GenerateComponent();
+
+            parentMenu.Children.Add(childMenu);
+
+            Assert.AreEqual(childMenu.Parent, parentMenu);
         }
     }
 }
