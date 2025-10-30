@@ -46,5 +46,25 @@ namespace Testing
 
             Assert.AreEqual(childMenu.Parent, parentMenu);
         }
+
+        [TestMethod]
+        public void TestIgnoreFromTraversal()
+        {
+            var ignoredMenu = new TestComponent("ignored", "menu to be ignored", true);
+            var secondMenu = new TestComponent("test", "function for testing");
+
+            ignoredMenu.Children.Add(secondMenu);
+
+            var args = new string[] { "test" };
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                ignoredMenu.HandleCommand(args);
+
+                string expected = "Validating arguments for test function\r\nExecuted test function\r\n";
+                Assert.AreEqual(expected, sw.ToString());
+            }
+        }
     }
 }
