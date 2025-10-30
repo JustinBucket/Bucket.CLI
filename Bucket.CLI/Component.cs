@@ -44,6 +44,8 @@ namespace Bucket.CLI
             }
         }
 
+        // TODO handle optional switches "--update-processes"
+        // these should not be seen as traversal args
         public void HandleCommand(string[] args)
         {
             var component = FindComponent(args);
