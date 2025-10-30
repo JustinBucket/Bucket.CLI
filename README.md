@@ -53,7 +53,9 @@ class Program
         // Create the component that will serve as the root
         // by configuring the ValidateArguments method, this component can be set up to perform an action,
         // display an error message, or return a list of all components in the CLI application
-        var root = new TestComponent("root", "this is the root component");
+        // we set the ignoreFromTraversal flag to true, meaning we don't have to call it out explicitly
+        // when passing arguments to the application (false by default)
+        var root = new TestComponent("root", "this is the root component", true);
         // this component provides a parent for all photo-based components 
         // displays all child components and requests user input on which one to call
         var photoComponent = new PhotoComponent();
@@ -66,12 +68,11 @@ class Program
 
         // generate the execution context, passing the root component
         // this will search through the components for the target one to be executed
-        // if our root was setup to ignore itself in the command the args would be:
+        // as our root component was configured to ignore itself in the command the args would be:
         // photo photofile
-        var context = new Context(root, args);
-        
-        // execute the command
-        // context.Execute();
+        // HandleCommand will parse the command, determine which component to execute
+        // call that component's ValidateArguments method, and call that component's Execute method
+        root.HandleCommand(args)
     }
 
 }
