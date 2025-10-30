@@ -9,14 +9,16 @@ namespace Bucket.CLI
 {
     public abstract class Component
     {
+        private readonly bool ignoreFromTraversal;
         public string Name { get; set; }
         public string Description { get; set; }
         public Component? Parent { get; set; }
         public ObservableCollection<Component> Children { get; } = [];
-        public Component(string name, string description)
+        public Component(string name, string description, bool ignoreFromTraversal = false)
         {
             Name = name;
             Description = description;
+            this.ignoreFromTraversal = ignoreFromTraversal;
             Children.CollectionChanged += HandleCollectionChanged;
         }
 
@@ -25,8 +27,8 @@ namespace Bucket.CLI
             return $"{Name}: {Description}";
         }
 
-        public abstract void Execute(params string[] args);
-        public abstract void ValidateArguments(params string[] args);
+        protected internal abstract void Execute(string[] args);
+        protected internal abstract void ValidateArguments(string[] args);
 
         private void HandleCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -42,29 +44,47 @@ namespace Bucket.CLI
             }
         }
 
+        public void HandleCommand(string[] args)
+        {
+            var component = FindComponent(args);
+
+            if (component == null)
+            {
+                throw new InvalidOperationException("Component not found.");
+            }
+
+            component.ValidateArguments(args);
+            component.Execute(args);
+        }
+
         internal Component? FindComponent(string[] args)
         {
             // get first arg, check if it matches current component
+            // what if we're in the root and want to ignore?
             var firstArg = args[0];
-            if (!firstArg.Equals(Name, StringComparison.InvariantCultureIgnoreCase))
+            if (
+                !firstArg.Equals(Name, StringComparison.InvariantCultureIgnoreCase)
+                && !ignoreFromTraversal
+            )
             {
                 return null;
             }
 
             // if only one arg, return current component
-            if (args.Length == 1)
+            if (args.Length == 1 && !ignoreFromTraversal)
             {
                 return this;
             }
 
             // else search through children for next arg
-            var secondArg = args[1];
+            // if we're ignoring the current component, use current arg
+            var secondArg = ignoreFromTraversal ? firstArg : args[1];
             var child = Children.FirstOrDefault(c => c.Name.Equals(secondArg, StringComparison.InvariantCultureIgnoreCase));
 
             if (child != null)
             {
                 // recurse into child with remaining args
-                var remainingArgs = args.Skip(1).ToArray();
+                var remainingArgs = ignoreFromTraversal? args : args.Skip(1).ToArray();
                 return child.FindComponent(remainingArgs);
             }
             else
