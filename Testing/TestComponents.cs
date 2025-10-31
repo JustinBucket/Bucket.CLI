@@ -66,5 +66,22 @@ namespace Testing
                 Assert.AreEqual(expected, sw.ToString());
             }
         }
+
+        [TestMethod]
+        public void TestOptionalParameterComponent()
+        {
+            var optionalParamComponent = new TestOptionalParameterComponent();
+
+            var args = new string[] { "optionalparametertest", "--optional" };
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                optionalParamComponent.HandleCommand(args);
+
+                string expectedWithParams = "optionalparametertest\r\n--optional\r\n";
+                Assert.AreEqual(expectedWithParams, sw.ToString());
+            }
+        }
     }
 }

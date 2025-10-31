@@ -44,8 +44,6 @@ namespace Bucket.CLI
             }
         }
 
-        // TODO handle optional switches "--update-processes"
-        // these should not be seen as traversal args
         public void HandleCommand(string[] args)
         {
             var component = FindComponent(args);
@@ -61,9 +59,12 @@ namespace Bucket.CLI
 
         internal Component? FindComponent(string[] args)
         {
+            // remove all optional parameters found, re-attach them when passing them down
+            var argsWithoutOptions = args.Where(arg => !arg.StartsWith("--")).ToArray();
+            
             // get first arg, check if it matches current component
             // what if we're in the root and want to ignore?
-            var firstArg = args[0];
+            var firstArg = argsWithoutOptions[0];
             if (
                 !firstArg.Equals(Name, StringComparison.InvariantCultureIgnoreCase)
                 && !ignoreFromTraversal
@@ -73,14 +74,14 @@ namespace Bucket.CLI
             }
 
             // if only one arg, return current component
-            if (args.Length == 1 && !ignoreFromTraversal)
+            if (argsWithoutOptions.Length == 1 && !ignoreFromTraversal)
             {
                 return this;
             }
 
             // else search through children for next arg
             // if we're ignoring the current component, use current arg
-            var secondArg = ignoreFromTraversal ? firstArg : args[1];
+            var secondArg = ignoreFromTraversal ? firstArg : argsWithoutOptions[1];
             var child = Children.FirstOrDefault(c => c.Name.Equals(secondArg, StringComparison.InvariantCultureIgnoreCase));
 
             if (child != null)
