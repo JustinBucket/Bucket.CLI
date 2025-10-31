@@ -77,7 +77,8 @@ class Program
 
 }
 ```
-
+### Optional arguments
+Components will ignore any tokens that begin with two hyphens (--), eventually passing them down to the target component once found
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
