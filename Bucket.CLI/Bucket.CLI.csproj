@@ -4,6 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Bucket.CLI</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JustinBucket</Authors>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath=""/>
+        <None Include="..\License.txt" Pack="true" PackagePath=""/>
+    </ItemGroup>
 
 </Project>
