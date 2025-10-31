@@ -13,7 +13,7 @@ namespace Bucket.CLI
         public string Name { get; set; }
         public string Description { get; set; }
         public Component? Parent { get; set; }
-        public ObservableCollection<Component> Children { get; } = [];
+        public ObservableCollection<Component> Children { get; } = new ObservableCollection<Component>();
         public Component(string name, string description, bool ignoreFromTraversal = false)
         {
             Name = name;
