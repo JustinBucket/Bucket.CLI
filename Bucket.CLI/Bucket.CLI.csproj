@@ -9,11 +9,13 @@
     <Authors>JustinBucket</Authors>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/JustinBucket/Bucket.CLI</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
         <None Include="..\README.md" Pack="true" PackagePath=""/>
         <None Include="..\License.txt" Pack="true" PackagePath=""/>
-    </ItemGroup>
+  </ItemGroup>
 
 </Project>
+
