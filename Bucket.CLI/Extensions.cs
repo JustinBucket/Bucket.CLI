@@ -26,7 +26,7 @@ namespace Bucket.CLI
         //     └── bcommand2
 
         // what if we had the top level build out the structure?
-        public static ICollection<string> GenerateTree(this Component component, int depth = 0)
+        internal static ICollection<string> GenerateTree(this Component component, int depth = 0)
         {
             // root
             // ├── command1 └ ├ │
@@ -108,7 +108,7 @@ namespace Bucket.CLI
             var index = (depth - 1) * 4;
             return index < 0 ? 0 : index;
         }
-        public static ICollection<string> GenerateTree(this Component component, int depth, bool lastChild = false)
+        internal static ICollection<string> GenerateTree(this Component component, int depth, bool lastChild = false)
         {
             // TODO: now it's adding a pipe on top of everything else
             // TODO: not putting enough space after children after depth 1
