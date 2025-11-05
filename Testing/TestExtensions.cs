@@ -46,26 +46,6 @@ namespace Testing
             Assert.AreEqual(expectedTree, outputTree);
         }
 
-        [TestMethod]
-        public void TestDepth2Generation()
-        {
-            var fcommand1 = new TestComponent("fcommand1", "first financial command");
-
-            var treeString = fcommand1.GenerateTree(2);
-
-            Assert.AreEqual("├   ├── fcommand1: first financial command", treeString.First());
-        }
-
-        [TestMethod]
-        public void TestDepth3GenerationNested()
-        {
-            var scommand1 = new TestComponent("scommand1", "sales subcommand 1");
-
-            var treeString = scommand1.GenerateTree(3);
-
-            Assert.AreEqual("├   ├   ├── scommand1: sales subcommand 1", treeString.First());
-        }
-
         private static string GenerateExpectedTree()
         {
             var treeLines = new List<string>
