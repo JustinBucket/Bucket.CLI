@@ -25,8 +25,14 @@ namespace Bucket.CLI
         //     ├── bcommand1
         //     └── bcommand2
 
+        public static string GenerateTree(this Component component)
+        {
+            var lines = component.GenerateTree(0);
+            return string.Join(Environment.NewLine, lines);
+        }
+        
         // what if we had the top level build out the structure?
-        internal static ICollection<string> GenerateTree(this Component component, int depth = 0)
+        public static ICollection<string> GenerateTree(this Component component, int depth = 0)
         {
             // root
             // ├── command1 └ ├ │
@@ -98,7 +104,7 @@ namespace Bucket.CLI
 
             return reversedLines;
         }
-        
+
         private static int CalculateIndex(int depth)
         {
             // depth 1 = 0
@@ -108,6 +114,42 @@ namespace Bucket.CLI
             var index = (depth - 1) * 4;
             return index < 0 ? 0 : index;
         }
+
+        private static string GenerateLeadingCharacters(int depth)
+        {
+            // if we're at depth 1, no pipe
+            // if we're at depth 2, pipe, but all dependent on whether we're on the the last child
+
+            if (depth == 0)
+            {
+                return string.Empty;
+            }
+
+            var numSpaces = CalculateNumberOfSpaces(depth);
+            var spaceString = new string(' ', numSpaces);
+            spaceString = spaceString + TPIPE + DASH + DASH + ' ';
+            
+            // depth - 1 because we're genearting space for the previous depth
+            for (int i = 0; i < depth - 1; i++)
+            {
+                spaceString = spaceString.Insert(i * 4, TPIPE.ToString());
+            }
+
+            // TODO: intersperse pipes for each depth level beyond 2
+            // for loop based on depth?
+            // index 4 should be another pipe
+            
+            return spaceString;
+        }
+        
+        private static int CalculateNumberOfSpaces(int depth)
+        {
+            // ugly
+            // 3(d - 1) + (d - 2)
+            var numSpaces = 3 * (depth - 1);
+            return numSpaces > 0 ? numSpaces : 0;
+        }
+
         internal static ICollection<string> GenerateTree(this Component component, int depth, bool lastChild = false)
         {
             // TODO: now it's adding a pipe on top of everything else
@@ -191,35 +233,6 @@ namespace Bucket.CLI
             return outputLines;
         }
 
-        private static string GenerateLeadingCharacters(int depth)
-        {
-            // if we're at depth 1, no pipe
-            // if we're at depth 2, pipe, but all dependent on whether we're on the the last child
-
-            if (depth == 0)
-            {
-                return string.Empty;
-            }
-
-            var numSpaces = CalculateNumberOfSpaces(depth);
-            var spaceString = new string(' ', numSpaces);
-            spaceString = spaceString + TPIPE + DASH + DASH + ' ';
-            if (depth > 1)
-            {
-                spaceString = spaceString.Insert(0, TPIPE.ToString());
-            }
-
-            // TODO: intersperse pipes for each depth level beyond 2
-            
-            return spaceString;
-        }
         
-        private static int CalculateNumberOfSpaces(int depth)
-        {
-            // ugly
-            // 3(d - 1) + (d - 2)
-            var numSpaces = (3 * (depth - 1)) + (depth - 2);
-            return numSpaces > 0 ? numSpaces : 0;
-        }
     }
 }
