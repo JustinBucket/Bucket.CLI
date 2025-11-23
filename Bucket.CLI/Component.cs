@@ -28,7 +28,7 @@ namespace Bucket.CLI
         }
 
         protected internal abstract void Execute(string[] args);
-        protected internal abstract void ValidateArguments(string[] args);
+        protected internal abstract string[] ValidateArguments(string[] args);
 
         private void HandleCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -53,7 +53,7 @@ namespace Bucket.CLI
                 throw new InvalidOperationException("Component not found.");
             }
 
-            component.ValidateArguments(args);
+            args = component.ValidateArguments(args);
             component.Execute(args);
         }
 

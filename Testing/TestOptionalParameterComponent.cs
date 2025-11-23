@@ -21,9 +21,9 @@ namespace Testing
             }
         }
 
-        protected override void ValidateArguments(string[] args)
+        protected override string[] ValidateArguments(string[] args)
         {
-            return;
+            return args;
         }
     }
 }

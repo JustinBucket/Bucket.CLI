@@ -83,5 +83,25 @@ namespace Testing
                 Assert.AreEqual(expectedWithParams, sw.ToString());
             }
         }
+
+        [TestMethod]
+        public void TestBat()
+        {
+            var rootComponent = new TestComponent("root", "root component", true);
+            var configEditor = new TestComponent("configeditor", "edits config files");
+
+            rootComponent.Children.Add(configEditor);
+
+            var args = new string[] {"configEditor", "--music"};
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                rootComponent.HandleCommand(args);
+
+                string expectedWithParams = "Validating arguments for configeditor function\r\nExecuted configeditor function\r\n";
+                Assert.AreEqual(expectedWithParams, sw.ToString());
+            }
+        }
     }
 }

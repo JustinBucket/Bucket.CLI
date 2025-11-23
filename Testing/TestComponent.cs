@@ -22,10 +22,10 @@ namespace Testing.TestObjects
             Console.WriteLine($"Executed {Name} function");
         }
 
-        protected override void ValidateArguments(string[] args)
+        protected override string[] ValidateArguments(string[] args)
         {
             Console.WriteLine($"Validating arguments for {Name} function");
-            return;
+            return args;
         }
        
     }
