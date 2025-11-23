@@ -103,5 +103,17 @@ namespace Testing
                 Assert.AreEqual(expectedWithParams, sw.ToString());
             }
         }
+
+        [TestMethod]
+        public void TestIgnoreFromTraversalComponents()
+        {
+            // this ones funky
+            var rootComponent = new TestComponent("root", "root component", true);
+            var music = new TestComponent("music", "music root", true);
+            var albumUnzipper = new TestComponent("albumunzipper", "album unzipper");
+
+            rootComponent.Children.Add(music);
+            music.Children.Add(albumUnzipper);
+        }
     }
 }
