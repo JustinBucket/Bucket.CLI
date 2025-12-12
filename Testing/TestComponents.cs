@@ -114,6 +114,17 @@ namespace Testing
 
             rootComponent.Children.Add(music);
             music.Children.Add(albumUnzipper);
+
+            var args = new string[] { "albumunzipper" };
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                rootComponent.HandleCommand(args);
+
+                string expectedWithParams = "Validating arguments for albumunzipper function\r\nExecuted albumunzipper function\r\n";
+                Assert.AreEqual(expectedWithParams, sw.ToString());
+            }
         }
     }
 }

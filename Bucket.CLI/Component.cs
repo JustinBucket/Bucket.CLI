@@ -82,18 +82,22 @@ namespace Bucket.CLI
             // else search through children for next arg
             // if we're ignoring the current component, use current arg
             var secondArg = ignoreFromTraversal ? firstArg : argsWithoutOptions[1];
-            var child = Children.FirstOrDefault(c => c.Name.Equals(secondArg, StringComparison.InvariantCultureIgnoreCase));
 
-            if (child != null)
+            // what if the child is being ignored?
+            // we should work recursively over all children, not try and pre-filter
+            // var child = Children.FirstOrDefault(c => c.Name.Equals(secondArg, StringComparison.InvariantCultureIgnoreCase));
+
+            foreach (var child in Children)
             {
-                // recurse into child with remaining args
                 var remainingArgs = ignoreFromTraversal? args : args.Skip(1).ToArray();
-                return child.FindComponent(remainingArgs);
+                var potentialChild = child.FindComponent(remainingArgs);
+                if (potentialChild != null)
+                {
+                    return potentialChild;
+                }
             }
-            else
-            {
-                return child;
-            }
+
+            return null;
         }
     }
 }
